@@ -1,5 +1,6 @@
 package com.mcsimonflash.sponge.minenight;
 
+import com.mcsimonflash.sponge.minenight.command.Base;
 import com.mcsimonflash.sponge.teslalibs.command.CommandService;
 import com.mcsimonflash.sponge.teslalibs.message.MessageService;
 import org.slf4j.Logger;
@@ -33,7 +34,9 @@ public class MineNight {
     }
 
     @Listener
-    public void onPreInit(GamePreInitializationEvent event) {}
+    public void onPreInit(GamePreInitializationEvent event) {
+        commands.register(Base.class);
+    }
 
     @Listener
     public void onReload(GameReloadEvent event) {
