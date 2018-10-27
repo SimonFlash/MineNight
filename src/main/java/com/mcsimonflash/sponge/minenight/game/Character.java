@@ -11,16 +11,22 @@ public class Character {
     }
 
     private final UUID player;
+    private final Game game;
     private final Text codename;
-    Role role = Role.AGENT;
+    private Role role = Role.AGENT;
 
-    public Character(UUID player, Text codename) {
+    public Character(UUID player, Game game, Text codename) {
         this.player = player;
+        this.game = game;
         this.codename = codename;
     }
 
     public UUID getPlayer() {
         return player;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public Text getCodename() {
@@ -29,6 +35,10 @@ public class Character {
 
     public Role getRole() {
         return role;
+    }
+
+    public void setRole(final Role role) {
+        this.role = role;
     }
 
 }
