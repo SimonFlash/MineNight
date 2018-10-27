@@ -9,15 +9,7 @@ import java.util.UUID;
 
 public class Manager {
 
-    private static final Map<String, Game> games = Maps.newHashMap();
-    private static final Map<UUID, Character> players = Maps.newHashMap();
-
-    public static Map<String, Game> getGames() {
-        return games;
-    }
-
-    public static Map<UUID, Character> getPlayers() {
-        return players;
-    }
+    public static final Map<String, Game> GAMES = Maps.newHashMap();
+    public static final Map<UUID, Character> PLAYERS = Maps.newHashMap();
 
 }

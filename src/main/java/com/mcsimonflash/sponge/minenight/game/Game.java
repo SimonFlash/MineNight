@@ -1,13 +1,12 @@
 package com.mcsimonflash.sponge.minenight.game;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 import com.mcsimonflash.sponge.minenight.MineNight;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Game {
@@ -16,32 +15,25 @@ public class Game {
         PREGAME, DISCUSSION, PROPOSAL, VOTING, SELECTION, POSTGAME
     }
 
-    private final String name;
-    private final Map<String, Character> characters = Maps.newHashMap();
-    private final Node[] nodes = new Node[5];
-    private State state = State.PREGAME;
-    private int node = 0;
-    private int proposed;
-    private Task task;
+    public final String name;
+    public final List<Character> characters = Lists.newArrayList();
+    public final Node[] nodes = new Node[] {
+            new Node(this, 2),
+            new Node(this, 3),
+            new Node(this, 2),
+            new Node(this, 3),
+            new Node(this, 4)};
+    public State state = State.PREGAME;
+    public Task task;
+    public int node = 0;
+    public int owner = 0;
 
     public Game(String name) {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Map<String, Character> getCharacters() {
-        return characters;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public Proposal getCurrentProposal() {
-        return nodes[node].getProposal();
+    public Node getCurrentNode() {
+        return nodes[node];
     }
 
     public void startDiscussion() {
@@ -55,6 +47,7 @@ public class Game {
 
     public void startProposal() {
         state = State.PROPOSAL;
+        getCurrentNode().startProposal(characters.get(owner));
         sendMessage(Text.of("Starting proposal phase."));
         startTask(() -> {
             sendMessage(Text.of("Ending proposal phase."));
@@ -62,12 +55,8 @@ public class Game {
         });
     }
 
-    public void propose(Character character) {
-        if (character.proposed = !character.proposed) {
-            sendMessage(Text.of(character.getName(), " has been added to the proposal."));
-        } else {
-            sendMessage(Text.of(character.getName(), " has been removed from the proposal."));
-        }
+    public void sendMessage(Text message) {
+        characters.forEach(c -> Sponge.getServer().getPlayer(c.player).ifPresent(p -> p.sendMessage(message)));
     }
 
     private void startTask(Runnable runnable) {
@@ -75,10 +64,6 @@ public class Game {
                 .execute(runnable)
                 .delay(30, TimeUnit.SECONDS)
                 .submit(MineNight.getContainer());
-    }
-
-    private void sendMessage(Text message) {
-        getCharacters().keySet().forEach(k -> Sponge.getServer().getPlayer(k).ifPresent(p -> p.sendMessage(message)));
     }
 
 }

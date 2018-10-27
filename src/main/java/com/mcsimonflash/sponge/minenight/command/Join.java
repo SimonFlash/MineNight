@@ -25,20 +25,20 @@ public class Join extends Command {
     @Inject
     private Join(Settings settings) {
         super(settings.usage(Text.of("/minenight join <game>"))
-                .elements(Arguments.choices(Manager.getGames(), ImmutableMap.of("no-choice", "No game is available with the name <arg>.")).toElement("game")));
+                .elements(Arguments.choices(Manager.GAMES, ImmutableMap.of("no-choice", "No game is available with the name <arg>.")).toElement("game")));
     }
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         Player player = CmdUtils.requirePlayer(src);
         Game game = args.requireOne("game");
-        if (Manager.getPlayers().containsKey(player.getUniqueId())) {
+        if (Manager.PLAYERS.containsKey(player.getUniqueId())) {
             throw new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.join.already-in-game"));
         }
         Character character = new Character(player.getUniqueId(), game, player.getName());
-        Manager.getPlayers().put(player.getUniqueId(), character);
-        game.getCharacters().put(character.getName(), character);
-        MineNight.sendMessage(player, "minenight.command.join.success", "game", game.getName());
+        Manager.PLAYERS.put(player.getUniqueId(), character);
+        game.characters.add(character);
+        MineNight.sendMessage(player, "minenight.command.join.success", "game", game.name);
         return CommandResult.success();
     }
 

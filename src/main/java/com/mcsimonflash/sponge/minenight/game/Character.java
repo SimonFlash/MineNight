@@ -8,32 +8,15 @@ public class Character {
         AGENT, HACKER
     }
 
-    private final UUID player;
-    private final Game game;
-    private final String name;
-    Role role = Role.AGENT;
-    boolean proposed;
+    public final UUID player;
+    public final Game game;
+    public final String name;
+    public Role role = Role.AGENT;
 
     public Character(UUID player, Game game, String name) {
         this.player = player;
         this.game = game;
         this.name = name;
-    }
-
-    public UUID getPlayer() {
-        return player;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Role getRole() {
-        return role;
     }
 
 }

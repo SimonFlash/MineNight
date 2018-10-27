@@ -2,31 +2,23 @@ package com.mcsimonflash.sponge.minenight.game;
 
 public class Node {
 
-    private final int players;
-    private final int hackers;
-    private final Proposal[] proposals = new Proposal[5];
-    private int proposal = -1;
+    public final Game game;
+    public final int players;
+    public final Proposal[] proposals = new Proposal[5];
+    public int proposal = -1;
 
-    public Node(int players, int hackers) {
+    public Node(Game game, int players) {
+        this.game = game;
         this.players = players;
-        this.hackers = hackers;
     }
 
-    public int getPlayers() {
-        return players;
-    }
-
-    public int getHackers() {
-        return hackers;
-    }
-
-    public Proposal getProposal() {
+    public Proposal getCurrentProposal() {
         return proposals[proposal];
     }
 
-    public Proposal startProposal(Character character) {
-        proposals[++proposal] = new Proposal(this, character);
-        return getProposal();
+    public Proposal startProposal(Character owner) {
+        proposals[++proposal] = new Proposal(game, this, owner);
+        return getCurrentProposal();
     }
 
 }

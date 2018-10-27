@@ -32,11 +32,20 @@ public class Propose extends Command {
         Player player = CmdUtils.requirePlayer(src);
         Game game = CmdUtils.requireGame(player, Game.State.PROPOSAL);
         String name = args.requireOne("name");
-        Character character = game.getCharacters().get(name);
-        if (character == null) {
-            throw new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.propose.invalid-name", "name", name));
+        Character character = game.characters.stream().filter(c -> c.name.equalsIgnoreCase(name)).findFirst()
+                .orElseThrow(() -> new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.propose.invalid-name", "name", name)));
+        Proposal proposal = game.getCurrentNode().getCurrentProposal();
+        if (proposal.owner.player != player.getUniqueId()) {
+            throw new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.propose.not-proposing"));
+        } else if (proposal.characters.contains(character)) {
+            proposal.characters.remove(character);
+            proposal.game.sendMessage(Text.of(character.name, " has been removed from the proposal."));
+        } else if (proposal.characters.size() != proposal.node.players) {
+            proposal.characters.add(character);
+            proposal.game.sendMessage(Text.of(character.name, " has been added to the proposal."));
+        } else {
+            throw new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.propose.limit", "limit", proposal.node.players));
         }
-        game.propose(character);
         return CommandResult.success();
     }
 

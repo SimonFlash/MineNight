@@ -20,13 +20,13 @@ public class CmdUtils {
     }
 
     public static Game requireGame(Player player, @Nullable Game.State state) throws CommandException {
-        Character character = Manager.getPlayers().get(player.getUniqueId());
+        Character character = Manager.PLAYERS.get(player.getUniqueId());
         if (character == null) {
             throw new CommandException(MineNight.getMessage(player.getLocale(), "minenight.command.requires-game"));
-        } else if (state != null && character.getGame().getState() != state) {
+        } else if (state != null && character.game.state != state) {
             throw new CommandException(MineNight.getMessage(player.getLocale(), "minenight.command.requires-state", "state", state));
         }
-        return character.getGame();
+        return character.game;
     }
 
 }

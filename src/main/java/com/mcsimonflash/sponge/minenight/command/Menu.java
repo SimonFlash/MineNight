@@ -1,8 +1,10 @@
 package com.mcsimonflash.sponge.minenight.command;
 
-import com.mcsimonflash.sponge.minenight.MineNight;
+import com.google.common.collect.ImmutableMap;
 import com.mcsimonflash.sponge.minenight.game.Game;
+import com.mcsimonflash.sponge.minenight.internal.Inventory;
 import com.mcsimonflash.sponge.minenight.internal.Manager;
+import com.mcsimonflash.sponge.teslalibs.argument.Arguments;
 import com.mcsimonflash.sponge.teslalibs.command.Aliases;
 import com.mcsimonflash.sponge.teslalibs.command.Command;
 import com.mcsimonflash.sponge.teslalibs.command.Permission;
@@ -15,24 +17,20 @@ import org.spongepowered.api.text.Text;
 
 import javax.inject.Inject;
 
-@Aliases("leave")
-@Permission("minenight.command.leave.base")
-public class Leave extends Command {
+@Aliases("menu")
+@Permission("minenight.command.menu.base")
+public class Menu extends Command {
 
     @Inject
-    private Leave(Settings settings) {
-        super(settings.usage(Text.of("/minenight leave")));
+    private Menu(Settings settings) {
+        super(settings.usage(Text.of("/minenight menu")));
     }
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public CommandResult execute(final CommandSource src, final CommandContext args) throws CommandException {
         Player player = CmdUtils.requirePlayer(src);
         Game game = CmdUtils.requireGame(player, null);
-        game.characters.remove(Manager.PLAYERS.remove(player.getUniqueId()));
-        if (game.characters.isEmpty()) {
-            Manager.GAMES.remove(game.name);
-        }
-        MineNight.sendMessage(player, "minenight.command.leave.success", "game", game.name);
+        Inventory.gameMenu(Manager.PLAYERS.get(player.getUniqueId()), game).open(player);
         return CommandResult.success();
     }
 

@@ -1,35 +1,24 @@
 package com.mcsimonflash.sponge.minenight.game;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class Proposal {
 
-    private final Node node;
-    private final Character character;
-    private final List<Character> players = Lists.newArrayList();
-    private final Map<UUID, Boolean> votes = Maps.newHashMap();
+    public final Game game;
+    public final Node node;
+    public final Character owner;
+    public final List<Character> characters = Lists.newArrayList();
+    public final Map<Character, Boolean> votes = Maps.newHashMap();
+    public boolean modifiable;
 
-    public Proposal(Node node, Character character) {
+    public Proposal(Game game, Node node, Character owner) {
+        this.game = game;
         this.node = node;
-        this.character = character;
-    }
-
-    public Character getCharacter() {
-        return character;
-    }
-
-    public List<Character> getPlayers() {
-        return players;
-    }
-
-    public Map<UUID, Boolean> getVotes() {
-        return votes;
+        this.owner = owner;
     }
 
 }

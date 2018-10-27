@@ -31,11 +31,11 @@ public class Invite extends Command {
         Player source = CmdUtils.requirePlayer(src);
         Player invitee = args.requireOne("player");
         Game game = CmdUtils.requireGame(source, Game.State.PREGAME);
-        if (Manager.getPlayers().containsKey(invitee.getUniqueId())) {
+        if (Manager.PLAYERS.containsKey(invitee.getUniqueId())) {
             throw new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.invite.already-in-game", "player", invitee.getName()));
         }
-        MineNight.sendMessage(source, "minenight.command.invite.success", "game", game.getName(), "player", invitee.getName());
-        MineNight.sendMessage(invitee, "minenight.command.invite.message", "game", game.getName(), "player", source.getName());
+        MineNight.sendMessage(source, "minenight.command.invite.success", "game", game.name, "player", invitee.getName());
+        MineNight.sendMessage(invitee, "minenight.command.invite.message", "game", game.name, "player", source.getName());
         return CommandResult.success();
     }
 
