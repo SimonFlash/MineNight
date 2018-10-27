@@ -11,11 +11,17 @@ import java.util.UUID;
 public class Proposal {
 
     private final Node node;
+    private final Character character;
     private final List<Character> players = Lists.newArrayList();
     private final Map<UUID, Boolean> votes = Maps.newHashMap();
 
-    public Proposal(Node node) {
+    public Proposal(Node node, Character character) {
         this.node = node;
+        this.character = character;
+    }
+
+    public Character getCharacter() {
+        return character;
     }
 
     public List<Character> getPlayers() {

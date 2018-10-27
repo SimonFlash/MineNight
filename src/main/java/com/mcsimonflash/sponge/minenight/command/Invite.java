@@ -30,7 +30,7 @@ public class Invite extends Command {
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         Player source = CmdUtils.requirePlayer(src);
         Player invitee = args.requireOne("player");
-        Game game = CmdUtils.requireGame(source);
+        Game game = CmdUtils.requireGame(source, Game.State.PREGAME);
         if (Manager.getPlayers().containsKey(invitee.getUniqueId())) {
             throw new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.invite.already-in-game", "player", invitee.getName()));
         }

@@ -28,7 +28,7 @@ public class Select extends Command {
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         Player player = CmdUtils.requirePlayer(src);
-        Game game = CmdUtils.requireGame(player);
+        Game game = CmdUtils.requireGame(player, Game.State.SELECTION);
         boolean secure = args.requireOne("selection");
         return CommandResult.empty(); //TODO
     }

@@ -1,7 +1,5 @@
 package com.mcsimonflash.sponge.minenight.game;
 
-import org.spongepowered.api.text.Text;
-
 import java.util.UUID;
 
 public class Character {
@@ -12,13 +10,14 @@ public class Character {
 
     private final UUID player;
     private final Game game;
-    private final Text codename;
-    private Role role = Role.AGENT;
+    private final String name;
+    Role role = Role.AGENT;
+    boolean proposed;
 
-    public Character(UUID player, Game game, Text codename) {
+    public Character(UUID player, Game game, String name) {
         this.player = player;
         this.game = game;
-        this.codename = codename;
+        this.name = name;
     }
 
     public UUID getPlayer() {
@@ -29,16 +28,12 @@ public class Character {
         return game;
     }
 
-    public Text getCodename() {
-        return codename;
+    public String getName() {
+        return name;
     }
 
     public Role getRole() {
         return role;
-    }
-
-    public void setRole(final Role role) {
-        this.role = role;
     }
 
 }

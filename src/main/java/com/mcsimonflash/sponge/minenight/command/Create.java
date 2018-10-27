@@ -35,10 +35,10 @@ public class Create extends Command {
             throw new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.create.already-exists", "name", name));
         }
         Game game = new Game(name);
-        Character character = new Character(player.getUniqueId(), game, Text.of(player.getName()));
+        Character character = new Character(player.getUniqueId(), game, player.getName());
         Manager.getGames().put(game.getName().toLowerCase(), game);
         Manager.getPlayers().put(player.getUniqueId(), character);
-        game.getCharacters().put(player.getUniqueId(), character);
+        game.getCharacters().put(character.getName(), character);
         MineNight.sendMessage(player, "minenight.command.create.success", "game", game.getName());
         return CommandResult.success();
     }

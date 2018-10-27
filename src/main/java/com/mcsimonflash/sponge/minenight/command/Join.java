@@ -35,9 +35,9 @@ public class Join extends Command {
         if (Manager.getPlayers().containsKey(player.getUniqueId())) {
             throw new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.join.already-in-game"));
         }
-        Character character = new Character(player.getUniqueId(), game, Text.of(player.getName()));
+        Character character = new Character(player.getUniqueId(), game, player.getName());
         Manager.getPlayers().put(player.getUniqueId(), character);
-        game.getCharacters().put(player.getUniqueId(), character);
+        game.getCharacters().put(character.getName(), character);
         MineNight.sendMessage(player, "minenight.command.join.success", "game", game.getName());
         return CommandResult.success();
     }

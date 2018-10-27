@@ -8,6 +8,8 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 
+import javax.annotation.Nullable;
+
 public class CmdUtils {
 
     public static Player requirePlayer(CommandSource src) throws CommandException {
@@ -17,10 +19,12 @@ public class CmdUtils {
         throw new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.player-only"));
     }
 
-    public static Game requireGame(Player player) throws CommandException {
+    public static Game requireGame(Player player, @Nullable Game.State state) throws CommandException {
         Character character = Manager.getPlayers().get(player.getUniqueId());
         if (character == null) {
             throw new CommandException(MineNight.getMessage(player.getLocale(), "minenight.command.requires-game"));
+        } else if (state != null && character.getGame().getState() != state) {
+            throw new CommandException(MineNight.getMessage(player.getLocale(), "minenight.command.requires-state", "state", state));
         }
         return character.getGame();
     }

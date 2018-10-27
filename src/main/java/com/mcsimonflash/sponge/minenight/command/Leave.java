@@ -27,8 +27,11 @@ public class Leave extends Command {
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         Player player = CmdUtils.requirePlayer(src);
-        Game game = CmdUtils.requireGame(player);
-        game.getCharacters().remove(player.getUniqueId()); //TODO: Close game if empty
+        Game game = CmdUtils.requireGame(player, null);
+        game.getCharacters().remove(player.getUniqueId());
+        if (game.getCharacters().isEmpty()) {
+            Manager.getGames().remove(game.getName());
+        }
         Manager.getPlayers().remove(player.getUniqueId());
         MineNight.sendMessage(player, "minenight.command.leave.success", "game", game.getName());
         return CommandResult.success();
