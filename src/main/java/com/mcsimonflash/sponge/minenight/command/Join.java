@@ -1,6 +1,7 @@
 package com.mcsimonflash.sponge.minenight.command;
 
 import com.google.common.collect.ImmutableMap;
+import com.mcsimonflash.sponge.minenight.MineNight;
 import com.mcsimonflash.sponge.minenight.game.Character;
 import com.mcsimonflash.sponge.minenight.game.Game;
 import com.mcsimonflash.sponge.minenight.internal.Manager;
@@ -31,9 +32,14 @@ public class Join extends Command {
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         Player player = CmdUtils.requirePlayer(src);
         Game game = args.requireOne("game");
-        Manager.getGames().put(game.getName().toLowerCase(), game);
-        game.getCharacters().put(player.getUniqueId(), new Character(player.getUniqueId(), game, Text.of(player.getName())));
-        return CommandResult.empty(); //TODO
+        if (Manager.getPlayers().containsKey(player.getUniqueId())) {
+            throw new CommandException(MineNight.getMessage(src.getLocale(), "minenight.command.join.already-in-game"));
+        }
+        Character character = new Character(player.getUniqueId(), game, Text.of(player.getName()));
+        Manager.getPlayers().put(player.getUniqueId(), character);
+        game.getCharacters().put(player.getUniqueId(), character);
+        MineNight.sendMessage(player, "minenight.command.join.success", "game", game.getName());
+        return CommandResult.success();
     }
 
 }

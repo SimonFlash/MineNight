@@ -4,6 +4,7 @@ import com.mcsimonflash.sponge.minenight.command.Base;
 import com.mcsimonflash.sponge.teslalibs.command.CommandService;
 import com.mcsimonflash.sponge.teslalibs.message.MessageService;
 import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
@@ -13,6 +14,9 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 
 import javax.inject.Inject;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 
 @Plugin(id = "minenight", name = "MineNight", version = "1.0.0", authors = "Simon_Flash")
@@ -30,7 +34,17 @@ public class MineNight {
         container = c;
         logger = c.getLogger();
         commands = CommandService.of(c);
-        messages = MessageService.of(c, "messages");
+        MessageService m;
+        try {
+            Path path = Sponge.getConfigManager().getPluginConfig(c).getDirectory().resolve("messages");
+            Files.createDirectories(path);
+            c.getAsset("messages.properties").get().copyToDirectory(path);
+            m = MessageService.of(path, "messages");
+        } catch (IOException e) {
+            m = MessageService.of(c, "messages");
+            e.printStackTrace();
+        }
+        messages = m;
     }
 
     @Listener
